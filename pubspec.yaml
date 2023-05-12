@@ -1,0 +1,64 @@
+name: satsang
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.5 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+    # for improve perfomance and better coding
+  get: ^4.6.5
+  # for using svg image
+  flutter_svg: ^1.1.6
+  # for formating date
+  intl: ^0.17.0
+  # for animation
+  simple_animations: ^5.0.0+3
+  # for using lottie animation
+  lottie: ^2.2.0
+  # for using shred preferences
+  shared_preferences: ^2.1.0
+  # for showing toast message
+  fluttertoast: ^8.2.1
+  # for shimmer effect
+  shimmer: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: AnekGujarati
+      fonts:
+        - asset: assets/fonts/AnekGujarati-Light.ttf
+          weight: 300
+          style: normal
+        - asset: assets/fonts/AnekGujarati-Regular.ttf
+          weight: 400
+          style: normal
+        - asset: assets/fonts/AnekGujarati-Medium.ttf
+          weight: 500
+          style: normal
+        - asset: assets/fonts/AnekGujarati-SemiBold.ttf
+          weight: 600
+          style: normal
+        - asset: assets/fonts/AnekGujarati-Bold.ttf
+          weight: 700
+          style: normal
+        - asset: assets/fonts/AnekGujarati-ExtraBold.ttf
+          weight: 800
+          style: normal
+
+  
+  
+# flutter build web --web-renderer=html
