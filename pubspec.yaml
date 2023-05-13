@@ -26,6 +26,10 @@ dependencies:
   fluttertoast: ^8.2.1
   # for shimmer effect
   shimmer: ^2.0.0
+  # for playing audio
+  just_audio: ^0.9.32
+  # for lyric
+  flutter_lyric: ^2.0.4+6
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +39,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/images/
 
   fonts:

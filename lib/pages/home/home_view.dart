@@ -5,6 +5,7 @@ import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
 import 'package:satsang/pages/base_contrl.dart';
+import 'package:satsang/pages/home/drawer_view.dart';
 import 'package:satsang/pages/home/home_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
 
@@ -17,8 +18,10 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: homeContrl.drawerKey,
         appBar: appbarLayout(context),
         body: mainLayout(context),
+        drawer: DrawerView(),
       ),
     );
   }
@@ -26,11 +29,11 @@ class HomeView extends StatelessWidget {
   appbarLayout(BuildContext context) {
     return AppBar(
       backgroundColor: AppColor.primaryClr,
-      toolbarHeight: 64,
+      toolbarHeight: 60,
       elevation: 0,
       automaticallyImplyLeading: false,
       flexibleSpace: Container(
-        height: 64,
+        height: 60,
         padding:
             EdgeInsets.symmetric(horizontal: AppHelper.width(context, 2.5)),
         child: Row(
@@ -40,7 +43,7 @@ class HomeView extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  // homeContrl.drawerKey.currentState!.openDrawer();
+                  homeContrl.drawerKey.currentState!.openDrawer();
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: Padding(
@@ -55,9 +58,10 @@ class HomeView extends StatelessWidget {
               ),
             ),
             AppText(
-              text: "Satsang",
+              text: "સત્સંગ",
               fontSize: AppHelper.font(context, 20),
               fontColor: Colors.white,
+              fontWeight: FontWeight.w600,
             ),
             AppHelper.sizedBox(context, null, 8),
             // Material(
