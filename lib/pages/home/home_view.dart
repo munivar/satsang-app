@@ -8,6 +8,7 @@ import 'package:satsang/pages/base_contrl.dart';
 import 'package:satsang/pages/home/drawer_view.dart';
 import 'package:satsang/pages/home/home_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
+import 'package:satsang/widgets/loader_widget.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -16,6 +17,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    baseContrl.initPlatformSetup(context);
     return SafeArea(
       child: Scaffold(
         key: homeContrl.drawerKey,
@@ -96,8 +98,35 @@ class HomeView extends StatelessWidget {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHelper.sizedBox(context, 2, null),
+              StreamBuilder(
+                  stream: homeContrl.readUsers(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final users = snapshot.data!;
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: const ScrollPhysics(),
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppText(text: users[index].id),
+                                AppText(text: users[index].name),
+                                AppText(text: users[index].contactNo),
+                              ],
+                            );
+                          });
+                    } else {
+                      return const Center(child: AppLoaderWidget());
+                    }
+                  }),
             ],
           ),
         ));

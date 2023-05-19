@@ -4,4 +4,5 @@ class AppImages {
   static const musicIcon = "assets/images/music_icon.svg";
   static const videoIcon = "assets/images/video_icon.svg";
   static const backIcon = "assets/images/back_icon.svg";
+  static const userIcon = "assets/images/user_icon.svg";
 }

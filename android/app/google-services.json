@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "990167222735",
+    "project_id": "satsang-5261c",
+    "storage_bucket": "satsang-5261c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990167222735:android:f064bc9231fca54172aaba",
+        "android_client_info": {
+          "package_name": "com.satsang.satsang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990167222735-kd2ed38620r7flcktfo1i8sfkfs63t6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6fIp5L2UH6PW3-bTvV9NUYmOF0_9re28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990167222735-kd2ed38620r7flcktfo1i8sfkfs63t6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

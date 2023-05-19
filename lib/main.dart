@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:satsang/firebase_options.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_const.dart';
 import 'package:satsang/helpers/app_routes.dart';
 import 'package:satsang/pages/base_contrl.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // firebase initialize
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // -- setup statusbar and navigationbar color
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColor.backgroundClr,

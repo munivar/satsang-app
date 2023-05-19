@@ -6,4 +6,6 @@ class AppColor {
   static Color shimmerBaseClr = Colors.grey.withOpacity(0.10);
   static Color shimmerHighlightClr = Colors.grey.withOpacity(0.05);
   static Color fontClr = const Color(0xff1F272E);
+  static Color borderClr = const Color(0xffD9D9D9);
+  static Color fontHintClr = const Color(0xff53596A);
 }

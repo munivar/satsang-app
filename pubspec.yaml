@@ -30,6 +30,10 @@ dependencies:
   just_audio: ^0.9.32
   # for lyric
   flutter_lyric: ^2.0.4+6
+  # for using firebase
+  firebase_core: ^2.13.0
+  # for save data in firebase firestore
+  cloud_firestore: ^4.7.1
 
 dev_dependencies:
   flutter_test:

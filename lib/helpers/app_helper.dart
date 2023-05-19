@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:satsang/helpers/app_images.dart';
+import 'package:satsang/pages/base_contrl.dart';
 
 class AppHelper {
   // -- sized box
@@ -14,8 +16,13 @@ class AppHelper {
 
   // -- responsive font
   static font(BuildContext context, double fontSize) {
+    final baseContrl = Get.find<BaseController>();
     double screenWidth = MediaQuery.of(context).size.width;
-    return screenWidth * (fontSize / 3.8) / 100;
+    if (baseContrl.isDesktop.isTrue) {
+      return fontSize;
+    } else {
+      return screenWidth * (fontSize / 3.8) / 100;
+    }
   }
 
   // -- responsive height
