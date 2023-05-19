@@ -132,7 +132,7 @@ class UserView extends StatelessWidget {
               AppButtonBox(
                 isClickable: true,
                 onTap: () {
-                  addNewUserSheet();
+                  deleteUserSheet();
                 },
                 child: Center(
                   child: AppText(
@@ -336,91 +336,74 @@ class UserView extends StatelessWidget {
     );
   }
 
-  // - AddNewUserSheet
-  // addNewUserSheet() {
-  //   Get.bottomSheet(
-  //     StatefulBuilder(builder: (context, setState) {
-  //       return SizedBox(
-  //         height: AppHelper.height(context, 46),
-  //         child: SingleChildScrollView(
-  //           scrollDirection: Axis.vertical,
-  //           physics: const BouncingScrollPhysics(),
-  //           child: Column(
-  //             children: [
-  //               AppHelper.sizedBox(context, 4, null),
-  //               AppText(
-  //                 text: "Add New User",
-  //                 fontSize: AppHelper.font(context, 20),
-  //                 fontWeight: FontWeight.w600,
-  //               ),
-  //               AppHelper.sizedBox(context, 2, null),
-  //               Align(
-  //                 alignment: Alignment.centerLeft,
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: 28),
-  //                   child: AppText(
-  //                     text: "User Name",
-  //                     fontSize: AppHelper.font(context, 16),
-  //                   ),
-  //                 ),
-  //               ),
-  //               AppTextField(
-  //                 hintText: "Enter User Name ...",
-  //                 controller: userContrl.nameContrl,
-  //                 textInputAction: TextInputAction.next,
-  //                 keyboardType: TextInputType.text,
-  //               ),
-  //               AppHelper.sizedBox(context, 0.5, null),
-  //               Align(
-  //                 alignment: Alignment.centerLeft,
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: 28),
-  //                   child: AppText(
-  //                     text: "Contact No",
-  //                     fontSize: AppHelper.font(context, 16),
-  //                   ),
-  //                 ),
-  //               ),
-  //               AppTextField(
-  //                 hintText: "Enter Contact No ...",
-  //                 controller: userContrl.contactContrl,
-  //                 textInputAction: TextInputAction.done,
-  //                 keyboardType: TextInputType.number,
-  //                 maxLength: 10,
-  //               ),
-  //               AppHelper.sizedBox(context, 2, null),
-  //               AppButtonBox(
-  //                 isClickable: true,
-  //                 onTap: () {
-  //                   userContrl.onNewUserTap();
-  //                 },
-  //                 child: Center(
-  //                   child: Obx(() {
-  //                     return userContrl.isLoading.isFalse
-  //                         ? AppText(
-  //                             text: "Add New User",
-  //                             fontColor: Colors.white,
-  //                             fontSize: AppHelper.font(context, 16),
-  //                             fontWeight: FontWeight.w600,
-  //                           )
-  //                         : const AppLoaderWidget();
-  //                   }),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //     backgroundColor: Colors.white,
-  //     elevation: 0,
-  //     persistent: true,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.only(
-  //         topLeft: Radius.circular(15),
-  //         topRight: Radius.circular(15),
-  //       ),
-  //     ),
-  //   );
-  // }
+  // deleteUserSheet
+  deleteUserSheet() {
+    Get.bottomSheet(
+      StatefulBuilder(builder: (context, setState) {
+        return SizedBox(
+          height: AppHelper.height(context, 46),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                AppHelper.sizedBox(context, 4, null),
+                AppText(
+                  text: "Delete User",
+                  fontSize: AppHelper.font(context, 20),
+                  fontWeight: FontWeight.w600,
+                ),
+                AppHelper.sizedBox(context, 2, null),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: AppText(
+                      text: "Contact No",
+                      fontSize: AppHelper.font(context, 16),
+                    ),
+                  ),
+                ),
+                AppTextField(
+                  hintText: "Enter Contact No ...",
+                  controller: userContrl.contactContrl,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
+                ),
+                AppHelper.sizedBox(context, 2, null),
+                AppButtonBox(
+                  isClickable: true,
+                  onTap: () {
+                    userContrl.onDeleteUserTap();
+                  },
+                  child: Center(
+                    child: Obx(() {
+                      return userContrl.isLoading.isFalse
+                          ? AppText(
+                              text: "Delete User",
+                              fontColor: Colors.white,
+                              fontSize: AppHelper.font(context, 16),
+                              fontWeight: FontWeight.w600,
+                            )
+                          : const AppLoaderWidget();
+                    }),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      persistent: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+    );
+  }
 }

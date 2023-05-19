@@ -101,7 +101,16 @@ class HomeView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppHelper.sizedBox(context, 2, null),
+              AppHelper.sizedBox(context, 1, null),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: AppText(
+                  text: "User List",
+                  fontSize: AppHelper.font(context, 20),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              AppHelper.sizedBox(context, 1, null),
               StreamBuilder(
                   stream: homeContrl.readUsers(),
                   builder: (context, snapshot) {
@@ -113,14 +122,26 @@ class HomeView extends StatelessWidget {
                           physics: const ScrollPhysics(),
                           itemCount: users.length,
                           itemBuilder: (context, index) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppText(text: users[index].id),
-                                AppText(text: users[index].name),
-                                AppText(text: users[index].contactNo),
-                              ],
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // AppText(text: users[index].id),
+                                  SizedBox(
+                                    width: AppHelper.width(context, 40),
+                                    child: AppText(
+                                      text: users[index].name,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  AppText(
+                                    text: users[index].contactNo,
+                                    fontSize: 18,
+                                  ),
+                                ],
+                              ),
                             );
                           });
                     } else {

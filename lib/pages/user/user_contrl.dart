@@ -32,6 +32,7 @@ class UserController extends GetxController {
           });
         } catch (e) {
           debugPrint("firebaseError ->> $e");
+          isLoading(false);
         }
       } else {
         Fluttertoast.showToast(msg: "Contact No field is Required");
@@ -63,19 +64,63 @@ class UserController extends GetxController {
               'name': nameContrl.text.toString(),
             });
             isLoading(false);
+            nameContrl.text = "";
+            contactContrl.text = "";
             Get.back();
             Fluttertoast.showToast(msg: "Data Updated");
           } else {
             Fluttertoast.showToast(msg: "Data not exist");
+            nameContrl.text = "";
+            contactContrl.text = "";
+            isLoading(false);
           }
         } catch (e) {
           debugPrint("firebaseError ->> $e");
+          isLoading(false);
         }
       } else {
         Fluttertoast.showToast(msg: "Contact No field is Required");
       }
     } else {
       Fluttertoast.showToast(msg: "Name field is Required");
+    }
+  }
+
+  Future onDeleteUserTap() async {
+    if (contactContrl.text.isNotEmpty) {
+      try {
+        isLoading(true);
+        // Get a instance to the Firestore collection
+        final docUser = FirebaseFirestore.instance.collection("users");
+        // Query for the specific document using its Contact No
+        QuerySnapshot querySnapshot = await docUser
+            .where(FieldPath.fromString("contactNo"),
+                isEqualTo: contactContrl.text.toString())
+            .get();
+        // Check if the document exists
+        if (querySnapshot.size > 0) {
+          // Get the document reference
+          DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
+          DocumentReference documentRef = documentSnapshot.reference;
+          // Update the data using the document reference
+          await documentRef.delete();
+          isLoading(false);
+          nameContrl.text = "";
+          contactContrl.text = "";
+          Get.back();
+          Fluttertoast.showToast(msg: "Data Deleted");
+        } else {
+          Fluttertoast.showToast(msg: "Data not exist");
+          nameContrl.text = "";
+          contactContrl.text = "";
+          isLoading(false);
+        }
+      } catch (e) {
+        debugPrint("firebaseError ->> $e");
+        isLoading(false);
+      }
+    } else {
+      Fluttertoast.showToast(msg: "Contact No field is Required");
     }
   }
 }
