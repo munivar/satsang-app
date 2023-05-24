@@ -143,7 +143,56 @@ class UserView extends StatelessWidget {
                   ),
                 ),
               ),
-              AppHelper.sizedBox(context, 2, null),
+              AppHelper.sizedBox(context, 5, null),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: AppText(
+                    text: "User List",
+                    fontSize: AppHelper.font(context, 20),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              AppHelper.sizedBox(context, 1, null),
+              StreamBuilder(
+                  stream: userContrl.readUsers(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final users = snapshot.data!;
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: const ScrollPhysics(),
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // AppText(text: users[index].id),
+                                  SizedBox(
+                                    width: AppHelper.width(context, 40),
+                                    child: AppText(
+                                      text: users[index].name,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  AppText(
+                                    text: users[index].contactNo,
+                                    fontSize: 18,
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    } else {
+                      return const Center(child: AppLoaderWidget());
+                    }
+                  }),
             ],
           ),
         ));

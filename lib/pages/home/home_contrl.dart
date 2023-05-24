@@ -20,6 +20,7 @@ class HomeController extends GetxController {
     AppImages.userIcon,
   ];
 
+  // - ondrawerTap
   void ondrawerTap(int index) {
     Get.back();
     if (drawerNameList[index] == "કીર્તન") {
@@ -29,6 +30,7 @@ class HomeController extends GetxController {
     }
   }
 
+  // - read user data from firestore
   Stream<List<UserList>> readUsers() =>
       FirebaseFirestore.instance.collection("users").snapshots().map((event) =>
           event.docs.map((doc) => UserList.fromJson(doc.data())).toList());

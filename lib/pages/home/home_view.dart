@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satsang/helpers/app_color.dart';
@@ -9,6 +10,7 @@ import 'package:satsang/pages/home/drawer_view.dart';
 import 'package:satsang/pages/home/home_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
 import 'package:satsang/widgets/loader_widget.dart';
+import 'package:satsang/widgets/text_filed.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -120,29 +122,102 @@ class HomeView extends StatelessWidget {
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: const ScrollPhysics(),
-                          itemCount: users.length,
+                          itemCount: users.length + 1,
+                          reverse: true,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  // AppText(text: users[index].id),
-                                  SizedBox(
-                                    width: AppHelper.width(context, 40),
-                                    child: AppText(
-                                      text: users[index].name,
-                                      fontSize: 18,
+                            if (index < users.length) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: AppHelper.width(context, 40),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 4),
+                                        child: AppText(
+                                          text: users[index].name,
+                                          maxLines: 2,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  AppText(
-                                    text: users[index].contactNo,
-                                    fontSize: 18,
-                                  ),
-                                ],
-                              ),
-                            );
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 15),
+                                      child: SizedBox(
+                                        width: AppHelper.width(context, 25),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 4),
+                                          child: AppText(
+                                            text: users[index].contactNo,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    AppTextField(
+                                      width: AppHelper.width(context, 20),
+                                      maxLength: 5,
+                                      keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: AppHelper.width(context, 40),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(bottom: 4),
+                                        child: AppText(
+                                          text: "Name",
+                                          maxLines: 2,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 15),
+                                      child: SizedBox(
+                                        width: AppHelper.width(context, 25),
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(bottom: 4),
+                                          child: AppText(
+                                            text: "Contact No",
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: AppHelper.width(context, 20),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(bottom: 4),
+                                        child: AppText(
+                                          text: "Path",
+                                          textAlign: TextAlign.center,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                           });
                     } else {
                       return const Center(child: AppLoaderWidget());

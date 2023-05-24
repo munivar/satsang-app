@@ -9,6 +9,7 @@ class UserController extends GetxController {
   TextEditingController contactContrl = TextEditingController();
   RxBool isLoading = false.obs;
 
+  // - adding new user to firestore
   Future onNewUserTap() async {
     if (nameContrl.text.isNotEmpty) {
       if (contactContrl.text.isNotEmpty) {
@@ -42,6 +43,7 @@ class UserController extends GetxController {
     }
   }
 
+  // - updating user to firestore
   Future onUpdateUserTap() async {
     if (nameContrl.text.isNotEmpty) {
       if (contactContrl.text.isNotEmpty) {
@@ -86,6 +88,7 @@ class UserController extends GetxController {
     }
   }
 
+  // - deleting user to firestore
   Future onDeleteUserTap() async {
     if (contactContrl.text.isNotEmpty) {
       try {
@@ -123,4 +126,9 @@ class UserController extends GetxController {
       Fluttertoast.showToast(msg: "Contact No field is Required");
     }
   }
+
+  // - read user data from firestore
+  Stream<List<UserList>> readUsers() =>
+      FirebaseFirestore.instance.collection("users").snapshots().map((event) =>
+          event.docs.map((doc) => UserList.fromJson(doc.data())).toList());
 }
