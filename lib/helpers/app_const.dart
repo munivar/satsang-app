@@ -1,5 +1,15 @@
 class Const {
   static const fontFamily = "AnekGujarati";
+  static const vanduPath = "વંદુ સહજાનંદ પાઠ";
+  static const hanumanjiMantra = "હનુમાનજી મંત્ર";
+  static const parchaPrakaran = "૧૪૨ પરચા પ્રકરણ";
+  static const kirtan = "કીર્તન";
+
+  // firebase collection name
+  static const fireUsers = "users";
+  static const fireVandu = "vandu";
+  static const fireHanumanji = "hanumanji";
+  static const fireParcha = "parcha";
 
   // kiratn lyrics
   static const normalLyric = """

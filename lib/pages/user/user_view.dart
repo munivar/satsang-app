@@ -216,7 +216,6 @@ class UserView extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           physics: const ScrollPhysics(),
                           itemCount: items.length,
-                          reverse: true,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
@@ -252,7 +251,14 @@ class UserView extends StatelessWidget {
                             );
                           });
                     } else {
-                      return const Center(child: AppLoaderWidget());
+                      return Center(
+                        child: SizedBox(
+                          height: 40,
+                          child: AppLoaderWidget(
+                            color: AppColor.primaryClr,
+                          ),
+                        ),
+                      );
                     }
                   }),
               AppHelper.sizedBox(context, 0.5, null),

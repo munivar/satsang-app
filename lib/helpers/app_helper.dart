@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satsang/helpers/app_images.dart';
 import 'package:satsang/pages/base_contrl.dart';
 
@@ -46,5 +47,10 @@ class AppHelper {
         child: Image.asset(AppImages.noImage),
       ),
     );
+  }
+
+  // -- formate date
+  static formateDate(DateTime date) {
+    return DateFormat("dd - MMM - yyyy").format(date);
   }
 }

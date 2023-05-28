@@ -149,7 +149,8 @@ class HomeView extends StatelessWidget {
                       child: AppButtonBox(
                         isClickable: true,
                         onTap: () {
-                          Get.toNamed(AppRoutes.commonDate);
+                          Get.toNamed(AppRoutes.commonDate,
+                              arguments: {"headName": items[index]});
                         },
                         child: Center(
                           child: AppText(

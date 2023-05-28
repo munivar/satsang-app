@@ -5,11 +5,9 @@ import 'package:get/get.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
-import 'package:satsang/helpers/app_routes.dart';
 import 'package:satsang/pages/base_contrl.dart';
 import 'package:satsang/pages/common/common_user_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
-import 'package:satsang/widgets/button_box.dart';
 import 'package:satsang/widgets/loader_widget.dart';
 import 'package:satsang/widgets/text_filed.dart';
 
@@ -103,6 +101,12 @@ class CommonUserView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHelper.sizedBox(context, 1, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -149,7 +153,13 @@ class CommonUserView extends StatelessWidget {
                   ],
                 ),
               ),
-              AppHelper.sizedBox(context, 1, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              AppHelper.sizedBox(context, 0.5, null),
               StreamBuilder(
                   stream: contrl.readUsers(),
                   builder: (context, snapshot) {
@@ -160,7 +170,6 @@ class CommonUserView extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           physics: const ScrollPhysics(),
                           itemCount: items.length,
-                          reverse: true,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
@@ -212,9 +221,23 @@ class CommonUserView extends StatelessWidget {
                             );
                           });
                     } else {
-                      return const Center(child: AppLoaderWidget());
+                      return Center(
+                        child: SizedBox(
+                          height: 40,
+                          child: AppLoaderWidget(
+                            color: AppColor.primaryClr,
+                          ),
+                        ),
+                      );
                     }
                   }),
+              AppHelper.sizedBox(context, 0.5, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
               AppHelper.sizedBox(context, 1, null),
             ],
           ),

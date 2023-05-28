@@ -14,7 +14,7 @@ import 'package:satsang/widgets/loader_widget.dart';
 class CommonDateView extends StatelessWidget {
   CommonDateView({super.key});
   final baseContrl = Get.find<BaseController>();
-  final control = Get.put(CommonDateController());
+  final contrl = Get.put(CommonDateController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +58,20 @@ class CommonDateView extends StatelessWidget {
                 ),
               ),
             ),
-            AppText(
-              text: "વંદુ સહજાનંદ પાઠ",
-              fontSize: AppHelper.font(context, 20),
-              fontColor: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
+            Obx(() {
+              return AppText(
+                text: contrl.headName.value,
+                fontSize: AppHelper.font(context, 20),
+                fontColor: Colors.white,
+                fontWeight: FontWeight.w600,
+              );
+            }),
             Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  contrl.onAddButtonTap(context);
+                },
                 borderRadius: BorderRadius.circular(50),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
@@ -105,40 +109,57 @@ class CommonDateView extends StatelessWidget {
                 ),
               ),
               AppHelper.sizedBox(context, 0.5, null),
-              StreamBuilder(
-                  stream: control.readDateList(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final items = snapshot.data!;
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const ScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: AppButtonBox(
-                                isClickable: true,
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.commonUser);
-                                },
-                                child: Center(
-                                  child: AppText(
-                                    text: items[index].date,
-                                    fontColor: Colors.white,
-                                    fontSize: AppHelper.font(context, 16),
-                                    fontWeight: FontWeight.w600,
-                                  ),
+              Obx(() {
+                return contrl.isLoading.isTrue
+                    ? SizedBox(
+                        height: 40,
+                        child: AppLoaderWidget(
+                          color: AppColor.primaryClr,
+                        ),
+                      )
+                    : StreamBuilder(
+                        stream: contrl.readDateList(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final items = snapshot.data!;
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                physics: const ScrollPhysics(),
+                                itemCount: items.length,
+                                reverse: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: AppButtonBox(
+                                      isClickable: true,
+                                      onTap: () {
+                                        Get.toNamed(AppRoutes.commonUser);
+                                      },
+                                      child: Center(
+                                        child: AppText(
+                                          text: items[index].date,
+                                          fontColor: Colors.white,
+                                          fontSize: AppHelper.font(context, 16),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          } else {
+                            return Center(
+                              child: SizedBox(
+                                height: 40,
+                                child: AppLoaderWidget(
+                                  color: AppColor.primaryClr,
                                 ),
                               ),
                             );
-                          });
-                    } else {
-                      return const Center(child: AppLoaderWidget());
-                    }
-                  }),
+                          }
+                        });
+              }),
               AppHelper.sizedBox(context, 0.5, null),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),

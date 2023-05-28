@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:satsang/pages/common/common_date_list.dart';
+import 'package:satsang/helpers/app_const.dart';
 import 'package:satsang/pages/user/user_list.dart';
 
 class UserController extends GetxController {
@@ -18,7 +18,8 @@ class UserController extends GetxController {
         try {
           isLoading(true);
           // Get a instance to the Firestore collection
-          final docUser = FirebaseFirestore.instance.collection("users").doc();
+          final docUser =
+              FirebaseFirestore.instance.collection(Const.fireUsers).doc();
           // create user jsonReq
           final user = UserList(
               id: docUser.id,
@@ -52,7 +53,8 @@ class UserController extends GetxController {
         try {
           isLoading(true);
           // Get a instance to the Firestore collection
-          final docUser = FirebaseFirestore.instance.collection("users");
+          final docUser =
+              FirebaseFirestore.instance.collection(Const.fireUsers);
           // Query for the specific document using its Contact No
           QuerySnapshot querySnapshot = await docUser
               .where(FieldPath.fromString("contactNo"),
@@ -96,7 +98,7 @@ class UserController extends GetxController {
       try {
         isLoading(true);
         // Get a instance to the Firestore collection
-        final docUser = FirebaseFirestore.instance.collection("users");
+        final docUser = FirebaseFirestore.instance.collection(Const.fireUsers);
         // Query for the specific document using its Contact No
         QuerySnapshot querySnapshot = await docUser
             .where(FieldPath.fromString("contactNo"),
@@ -130,7 +132,10 @@ class UserController extends GetxController {
   }
 
   // - read user data from firestore
-  Stream<List<UserList>> readUsers() =>
-      FirebaseFirestore.instance.collection("users").snapshots().map((event) =>
+  Stream<List<UserList>> readUsers() => FirebaseFirestore.instance
+      .collection(Const.fireUsers)
+      .orderBy('name')
+      .snapshots()
+      .map((event) =>
           event.docs.map((doc) => UserList.fromJson(doc.data())).toList());
 }

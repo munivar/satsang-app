@@ -2,14 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:satsang/helpers/app_const.dart';
+import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/pages/common/common_date_list.dart';
 
 class CommonDateController extends GetxController {
   RxBool isLoading = false.obs;
+  RxString headName = "".obs;
+
+  @override
+  void onInit() {
+    headName.value = Get.arguments["headName"];
+    super.onInit();
+  }
 
   // - read user data from firestore
   Stream<List<CommonDateList>> readDateList() => FirebaseFirestore.instance
-      .collection("vandu")
+      .collection(headName.value == Const.vanduPath
+          ? Const.fireVandu
+          : headName.value == Const.hanumanjiMantra
+              ? Const.fireHanumanji
+              : Const.fireParcha)
+      .orderBy('date')
       .snapshots()
       .map((event) => event.docs
           .map((doc) => CommonDateList.fromJson(doc.data()))
@@ -18,7 +32,7 @@ class CommonDateController extends GetxController {
   Future<DateTime?> pickDate(BuildContext context) => showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime.now().subtract(const Duration(days: 0)),
+        firstDate: DateTime(1900),
         lastDate: DateTime(2200),
       );
 
@@ -27,9 +41,15 @@ class CommonDateController extends GetxController {
       DateTime? date = await pickDate(context);
       if (date == null) return;
       isLoading(true);
-      final finalDate = "${date.day} - ${date.month} - ${date.year}";
+      final finalDate = AppHelper.formateDate(date);
       // Get a instance to the Firestore collection
-      final documentRef = FirebaseFirestore.instance.collection("vandu").doc();
+      final documentRef = FirebaseFirestore.instance
+          .collection(headName.value == Const.vanduPath
+              ? Const.fireVandu
+              : headName.value == Const.hanumanjiMantra
+                  ? Const.fireHanumanji
+                  : Const.fireParcha)
+          .doc();
       // create user jsonReq
       final user = CommonDateList(id: documentRef.id, date: finalDate);
       final jsonReq = user.toJson();
