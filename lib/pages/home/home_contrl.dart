@@ -10,14 +10,19 @@ class HomeController extends GetxController {
 
   // - drawer name list
   List<String> drawerNameList = [
-    // "કીર્તન",
-    "User Management"
+    "કીર્તન",
   ];
 
   // - drawer icon list
   List<String> drawerIconList = [
-    // AppImages.musicIcon,
-    AppImages.userIcon,
+    AppImages.musicIcon,
+  ];
+
+  // - Path List
+  List<String> pathList = [
+    "વંદુ સહજાનંદ પાઠ",
+    "હનુમાનજી મંત્ર",
+    "૧૪૨ પરચા પ્રકરણ"
   ];
 
   // - ondrawerTap
@@ -25,8 +30,6 @@ class HomeController extends GetxController {
     Get.back();
     if (drawerNameList[index] == "કીર્તન") {
       Get.toNamed(AppRoutes.kirtan);
-    } else if (drawerNameList[index] == "User Management") {
-      Get.toNamed(AppRoutes.user);
     }
   }
 

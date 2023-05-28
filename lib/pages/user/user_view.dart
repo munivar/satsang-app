@@ -14,7 +14,7 @@ import 'package:satsang/widgets/text_filed.dart';
 class UserView extends StatelessWidget {
   UserView({super.key});
   final baseContrl = Get.find<BaseController>();
-  final userContrl = Get.put(UserController());
+  final contrl = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,30 +59,76 @@ class UserView extends StatelessWidget {
               ),
             ),
             AppText(
-              text: "User Management",
+              text: "ભક્તોની યાદી",
               fontSize: AppHelper.font(context, 20),
               fontColor: Colors.white,
               fontWeight: FontWeight.w600,
             ),
-            AppHelper.sizedBox(context, null, 8),
-            // Material(
-            //   color: Colors.transparent,
-            //   child: InkWell(
-            //     onTap: () {
-            //       dashboardContrl.openBottomSheet();
-            //     },
-            //     borderRadius: BorderRadius.circular(50),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(8),
-            //       child: SvgPicture.asset(
-            //         AppImages.languageIcon,
-            //         color: AppColor.primaryClr,
-            //         height: 23,
-            //         width: 23,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      contrl.nameContrl.text = "";
+                      contrl.contactContrl.text = "";
+                      addNewUserSheet();
+                    },
+                    borderRadius: BorderRadius.circular(50),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(
+                        AppImages.addIcon,
+                        color: Colors.white,
+                        height: 23,
+                        width: 23,
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      contrl.nameContrl.text = "";
+                      contrl.contactContrl.text = "";
+                      updateUserSheet();
+                    },
+                    borderRadius: BorderRadius.circular(50),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SvgPicture.asset(
+                        AppImages.editIcon,
+                        color: Colors.white,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      contrl.nameContrl.text = "";
+                      contrl.contactContrl.text = "";
+                      deleteUserSheet();
+                    },
+                    borderRadius: BorderRadius.circular(50),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(
+                        AppImages.deleteIcon,
+                        color: Colors.white,
+                        height: 23,
+                        width: 23,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -98,92 +144,108 @@ class UserView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              AppHelper.sizedBox(context, 4, null),
-              AppButtonBox(
-                isClickable: true,
-                onTap: () {
-                  addNewUserSheet();
-                },
-                child: Center(
-                  child: AppText(
-                    text: "Add New User",
-                    fontColor: Colors.white,
-                    fontSize: AppHelper.font(context, 16),
-                    fontWeight: FontWeight.w600,
-                  ),
+              AppHelper.sizedBox(context, 1, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
                 ),
               ),
-              AppHelper.sizedBox(context, 2, null),
-              AppButtonBox(
-                isClickable: true,
-                onTap: () {
-                  updateUserSheet();
-                },
-                child: Center(
-                  child: AppText(
-                    text: "Update User",
-                    fontColor: Colors.white,
-                    fontSize: AppHelper.font(context, 16),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              AppHelper.sizedBox(context, 2, null),
-              AppButtonBox(
-                isClickable: true,
-                onTap: () {
-                  deleteUserSheet();
-                },
-                child: Center(
-                  child: AppText(
-                    text: "Delete User",
-                    fontColor: Colors.white,
-                    fontSize: AppHelper.font(context, 16),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              AppHelper.sizedBox(context, 5, null),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
+              Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: AppText(
-                    text: "User List",
-                    fontSize: AppHelper.font(context, 20),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  child: Obx(() {
+                    return AppText(
+                      text: "Total ${contrl.totalUser.value} Devotees",
+                      fontSize: AppHelper.font(context, 20),
+                      fontWeight: FontWeight.bold,
+                    );
+                  })),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              AppHelper.sizedBox(context, 0.5, null),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: AppHelper.width(context, 40),
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 4),
+                        child: AppText(
+                          text: "Devotee Name",
+                          maxLines: 2,
+                          fontSize: 18,
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: AppHelper.width(context, 30),
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 4),
+                        child: AppText(
+                          text: "Contact No",
+                          fontSize: 18,
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               AppHelper.sizedBox(context, 1, null),
               StreamBuilder(
-                  stream: userContrl.readUsers(),
+                  stream: contrl.readUsers(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final users = snapshot.data!;
+                      // call this fun after windget initialized
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        contrl.totalUser.value = snapshot.data!.length;
+                      });
+                      //////
+                      final items = snapshot.data!;
                       return ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: const ScrollPhysics(),
-                          itemCount: users.length,
+                          itemCount: items.length,
+                          reverse: true,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // AppText(text: users[index].id),
                                   SizedBox(
                                     width: AppHelper.width(context, 40),
-                                    child: AppText(
-                                      text: users[index].name,
-                                      fontSize: 18,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 4),
+                                      child: AppText(
+                                        text: items[index].name,
+                                        maxLines: 2,
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
-                                  AppText(
-                                    text: users[index].contactNo,
-                                    fontSize: 18,
+                                  SizedBox(
+                                    width: AppHelper.width(context, 30),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 4),
+                                      child: AppText(
+                                        text: items[index].contactNo,
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -193,6 +255,14 @@ class UserView extends StatelessWidget {
                       return const Center(child: AppLoaderWidget());
                     }
                   }),
+              AppHelper.sizedBox(context, 0.5, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              AppHelper.sizedBox(context, 1, null),
             ],
           ),
         ));
@@ -211,7 +281,7 @@ class UserView extends StatelessWidget {
               children: [
                 AppHelper.sizedBox(context, 4, null),
                 AppText(
-                  text: "Add New User",
+                  text: "Add New Devotee",
                   fontSize: AppHelper.font(context, 20),
                   fontWeight: FontWeight.w600,
                 ),
@@ -221,14 +291,14 @@ class UserView extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 28),
                     child: AppText(
-                      text: "User Name",
+                      text: "Devotee Name",
                       fontSize: AppHelper.font(context, 16),
                     ),
                   ),
                 ),
                 AppTextField(
-                  hintText: "Enter User Name ...",
-                  controller: userContrl.nameContrl,
+                  hintText: "Enter Devotee Name ...",
+                  controller: contrl.nameContrl,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                 ),
@@ -245,7 +315,7 @@ class UserView extends StatelessWidget {
                 ),
                 AppTextField(
                   hintText: "Enter Contact No ...",
-                  controller: userContrl.contactContrl,
+                  controller: contrl.contactContrl,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
                   maxLength: 10,
@@ -254,13 +324,13 @@ class UserView extends StatelessWidget {
                 AppButtonBox(
                   isClickable: true,
                   onTap: () {
-                    userContrl.onNewUserTap();
+                    contrl.onNewUserTap();
                   },
                   child: Center(
                     child: Obx(() {
-                      return userContrl.isLoading.isFalse
+                      return contrl.isLoading.isFalse
                           ? AppText(
-                              text: "Add New User",
+                              text: "Add New Devotee",
                               fontColor: Colors.white,
                               fontSize: AppHelper.font(context, 16),
                               fontWeight: FontWeight.w600,
@@ -299,7 +369,7 @@ class UserView extends StatelessWidget {
               children: [
                 AppHelper.sizedBox(context, 4, null),
                 AppText(
-                  text: "Update User",
+                  text: "Edit Devotee Details",
                   fontSize: AppHelper.font(context, 20),
                   fontWeight: FontWeight.w600,
                 ),
@@ -309,14 +379,14 @@ class UserView extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 28),
                     child: AppText(
-                      text: "Contact No",
+                      text: "Devotee Contact No",
                       fontSize: AppHelper.font(context, 16),
                     ),
                   ),
                 ),
                 AppTextField(
                   hintText: "Enter Contact No ...",
-                  controller: userContrl.contactContrl,
+                  controller: contrl.contactContrl,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
                   maxLength: 10,
@@ -338,14 +408,14 @@ class UserView extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 28),
                     child: AppText(
-                      text: "User Name",
+                      text: "Devotee Name",
                       fontSize: AppHelper.font(context, 16),
                     ),
                   ),
                 ),
                 AppTextField(
-                  hintText: "Enter New User Name ...",
-                  controller: userContrl.nameContrl,
+                  hintText: "Enter New Devotee Name ...",
+                  controller: contrl.nameContrl,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                 ),
@@ -353,13 +423,13 @@ class UserView extends StatelessWidget {
                 AppButtonBox(
                   isClickable: true,
                   onTap: () {
-                    userContrl.onUpdateUserTap();
+                    contrl.onUpdateUserTap();
                   },
                   child: Center(
                     child: Obx(() {
-                      return userContrl.isLoading.isFalse
+                      return contrl.isLoading.isFalse
                           ? AppText(
-                              text: "Update User",
+                              text: "Update Devotee",
                               fontColor: Colors.white,
                               fontSize: AppHelper.font(context, 16),
                               fontWeight: FontWeight.w600,
@@ -398,11 +468,25 @@ class UserView extends StatelessWidget {
               children: [
                 AppHelper.sizedBox(context, 4, null),
                 AppText(
-                  text: "Delete User",
+                  text: "Delete Devotee",
                   fontSize: AppHelper.font(context, 20),
                   fontWeight: FontWeight.w600,
                 ),
                 AppHelper.sizedBox(context, 2, null),
+                AppHelper.sizedBox(context, 0.5, null),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: AppText(
+                      maxLines: 2,
+                      text:
+                          "*Devotee Data are not recoverable after Deletetion",
+                      fontSize: AppHelper.font(context, 12),
+                      fontColor: Colors.red,
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -415,7 +499,7 @@ class UserView extends StatelessWidget {
                 ),
                 AppTextField(
                   hintText: "Enter Contact No ...",
-                  controller: userContrl.contactContrl,
+                  controller: contrl.contactContrl,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
                   maxLength: 10,
@@ -424,13 +508,13 @@ class UserView extends StatelessWidget {
                 AppButtonBox(
                   isClickable: true,
                   onTap: () {
-                    userContrl.onDeleteUserTap();
+                    contrl.onDeleteUserTap();
                   },
                   child: Center(
                     child: Obx(() {
-                      return userContrl.isLoading.isFalse
+                      return contrl.isLoading.isFalse
                           ? AppText(
-                              text: "Delete User",
+                              text: "Delete Devotee",
                               fontColor: Colors.white,
                               fontSize: AppHelper.font(context, 16),
                               fontWeight: FontWeight.w600,

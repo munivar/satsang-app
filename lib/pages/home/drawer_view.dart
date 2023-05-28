@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satsang/helpers/app_helper.dart';
-import 'package:satsang/helpers/app_routes.dart';
 import 'package:satsang/pages/base_contrl.dart';
 import 'package:satsang/pages/home/home_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
 
 class DrawerView extends StatelessWidget {
   DrawerView({super.key});
-  final homeContrl = Get.find<HomeController>();
   final baseContrl = Get.find<BaseController>();
+  final contrl = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +22,11 @@ class DrawerView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               physics: const ScrollPhysics(),
-              itemCount: homeContrl.drawerNameList.length,
+              itemCount: contrl.drawerNameList.length,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    homeContrl.ondrawerTap(index);
+                    contrl.ondrawerTap(index);
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -38,7 +37,7 @@ class DrawerView extends StatelessWidget {
                     child: Row(
                       children: [
                         SvgPicture.asset(
-                          homeContrl.drawerIconList[index],
+                          contrl.drawerIconList[index],
                           height: 22,
                           width: 22,
                           color: const Color(0xff53596A),
@@ -48,7 +47,7 @@ class DrawerView extends StatelessWidget {
                               horizontal: AppHelper.width(context, 4),
                               vertical: AppHelper.height(context, 1)),
                           child: AppText(
-                            text: homeContrl.drawerNameList[index],
+                            text: contrl.drawerNameList[index],
                             fontSize: AppHelper.font(context, 17),
                             fontColor: const Color(0xff53596A),
                             fontWeight: FontWeight.w400,

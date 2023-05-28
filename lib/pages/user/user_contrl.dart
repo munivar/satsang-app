@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:satsang/pages/common/common_date_list.dart';
 import 'package:satsang/pages/user/user_list.dart';
 
 class UserController extends GetxController {
   TextEditingController nameContrl = TextEditingController();
   TextEditingController contactContrl = TextEditingController();
   RxBool isLoading = false.obs;
+  RxInt totalUser = 0.obs;
 
   // - adding new user to firestore
   Future onNewUserTap() async {

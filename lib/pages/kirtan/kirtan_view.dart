@@ -13,7 +13,7 @@ import 'package:satsang/widgets/app_text.dart';
 class KirtanView extends StatelessWidget {
   KirtanView({super.key});
   final baseContrl = Get.find<BaseController>();
-  final kirtanContrl = Get.put(KirtanController());
+  final contrl = Get.put(KirtanController());
 
   @override
   Widget build(BuildContext context) {
@@ -107,15 +107,15 @@ class KirtanView extends StatelessWidget {
         Obx(() {
           return LyricsReader(
             padding: const EdgeInsets.symmetric(horizontal: 40),
-            model: kirtanContrl.lyricModel,
-            position: kirtanContrl.playProgress.value,
-            lyricUi: kirtanContrl.lyricUI,
-            playing: kirtanContrl.playing.value,
+            model: contrl.lyricModel,
+            position: contrl.playProgress.value,
+            lyricUi: contrl.lyricUI,
+            playing: contrl.playing.value,
             size: Size(double.infinity, AppHelper.height(context, 50)),
             emptyBuilder: () => Center(
               child: Text(
                 "No lyrics",
-                style: kirtanContrl.lyricUI.getOtherMainTextStyle(),
+                style: contrl.lyricUI.getOtherMainTextStyle(),
               ),
             ),
           );
@@ -130,7 +130,7 @@ class KirtanView extends StatelessWidget {
         AppHelper.sizedBox(context, 2, null),
         Obx(() {
           return AppText(
-            text: "Progress:${kirtanContrl.sliderProgress.value}",
+            text: "Progress:${contrl.sliderProgress.value}",
             fontSize: 18,
             fontColor: Colors.grey,
           );
@@ -144,7 +144,7 @@ class KirtanView extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AppText(
-                    text: kirtanContrl.startTime.value,
+                    text: contrl.startTime.value,
                     fontSize: 16,
                   ),
                 );
@@ -153,7 +153,7 @@ class KirtanView extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AppText(
-                    text: kirtanContrl.endTime.value,
+                    text: contrl.endTime.value,
                     fontSize: 16,
                   ),
                 );
@@ -162,24 +162,24 @@ class KirtanView extends StatelessWidget {
           ),
         ),
         Obx(() {
-          return kirtanContrl.sliderProgress.value < kirtanContrl.maxValue.value
+          return contrl.sliderProgress.value < contrl.maxValue.value
               ? Slider(
                   min: 0,
-                  max: kirtanContrl.maxValue.value,
-                  label: kirtanContrl.sliderProgress.value.toString(),
-                  value: kirtanContrl.sliderProgress.value,
+                  max: contrl.maxValue.value,
+                  label: contrl.sliderProgress.value.toString(),
+                  value: contrl.sliderProgress.value,
                   activeColor: AppColor.primaryClr,
                   inactiveColor: Colors.grey,
                   onChanged: (double value) {
-                    kirtanContrl.sliderProgress.value = value;
+                    contrl.sliderProgress.value = value;
                   },
                   onChangeStart: (double value) {
-                    kirtanContrl.isTap.value = true;
+                    contrl.isTap.value = true;
                   },
                   onChangeEnd: (double value) {
-                    kirtanContrl.isTap.value = false;
-                    kirtanContrl.playProgress.value = value.toInt();
-                    kirtanContrl.audioPlayer
+                    contrl.isTap.value = false;
+                    contrl.playProgress.value = value.toInt();
+                    contrl.audioPlayer
                         .seek(Duration(milliseconds: value.toInt()));
                   },
                 )
@@ -194,26 +194,25 @@ class KirtanView extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () async {
-                  kirtanContrl.audioPlayer
-                      .setAsset("assets/bolya_shree_hari.m4a");
-                  await kirtanContrl.audioPlayer.play();
-                  kirtanContrl.playing.value = true;
-                  kirtanContrl.audioPlayer.positionStream.listen((event) {
-                    kirtanContrl.playProgress.value = event.inMilliseconds;
-                    kirtanContrl.sliderProgress.value =
+                  contrl.audioPlayer.setAsset("assets/bolya_shree_hari.m4a");
+                  await contrl.audioPlayer.play();
+                  contrl.playing.value = true;
+                  contrl.audioPlayer.positionStream.listen((event) {
+                    contrl.playProgress.value = event.inMilliseconds;
+                    contrl.sliderProgress.value =
                         event.inMilliseconds.toDouble();
-                    kirtanContrl.startTime.value =
+                    contrl.startTime.value =
                         "${event.inHours}:${event.inMinutes}:${event.inSeconds}";
                   });
-                  kirtanContrl.audioPlayer.playbackEventStream.listen((event) {
-                    if (kirtanContrl.isTap.value) return;
-                    kirtanContrl.maxValue.value =
+                  contrl.audioPlayer.playbackEventStream.listen((event) {
+                    if (contrl.isTap.value) return;
+                    contrl.maxValue.value =
                         event.bufferedPosition.inMilliseconds.toDouble();
-                    kirtanContrl.endTime.value =
+                    contrl.endTime.value =
                         "${event.bufferedPosition.inHours}:${event.bufferedPosition.inMinutes}:${event.bufferedPosition.inSeconds}";
                   });
-                  kirtanContrl.audioPlayer.playerStateStream.listen((state) {
-                    kirtanContrl.playing.value = state.playing;
+                  contrl.audioPlayer.playerStateStream.listen((state) {
+                    contrl.playing.value = state.playing;
                   });
                 },
                 borderRadius: BorderRadius.circular(10),
@@ -232,7 +231,7 @@ class KirtanView extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () async {
-                  await kirtanContrl.audioPlayer.stop();
+                  await contrl.audioPlayer.stop();
                 },
                 borderRadius: BorderRadius.circular(10),
                 child: const Padding(

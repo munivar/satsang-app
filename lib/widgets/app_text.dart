@@ -43,7 +43,7 @@ class AppText extends StatelessWidget {
           fontSize: fontSize ?? 12,
           color: fontColor ?? AppColor.fontClr,
           fontWeight: fontWeight ?? FontWeight.w500,
-          letterSpacing: letterSpacing ?? 0,
+          letterSpacing: letterSpacing ?? 0.7,
           wordSpacing: wordSpacing ?? 0,
           fontFamily: fontFamily,
         ),

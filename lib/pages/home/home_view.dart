@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
+import 'package:satsang/helpers/app_routes.dart';
 import 'package:satsang/pages/base_contrl.dart';
 import 'package:satsang/pages/home/drawer_view.dart';
 import 'package:satsang/pages/home/home_contrl.dart';
 import 'package:satsang/widgets/app_text.dart';
-import 'package:satsang/widgets/loader_widget.dart';
-import 'package:satsang/widgets/text_filed.dart';
+import 'package:satsang/widgets/button_box.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
   final baseContrl = Get.find<BaseController>();
-  final homeContrl = Get.put(HomeController());
+  final contrl = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     baseContrl.initPlatformSetup(context);
     return SafeArea(
       child: Scaffold(
-        key: homeContrl.drawerKey,
+        key: contrl.drawerKey,
         appBar: appbarLayout(context),
         body: mainLayout(context),
         drawer: DrawerView(),
@@ -47,7 +46,7 @@ class HomeView extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  homeContrl.drawerKey.currentState!.openDrawer();
+                  contrl.drawerKey.currentState!.openDrawer();
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: Padding(
@@ -104,125 +103,73 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHelper.sizedBox(context, 1, null),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: AppText(
-                  text: "User List",
-                  fontSize: AppHelper.font(context, 20),
-                  fontWeight: FontWeight.w600,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
                 ),
               ),
-              AppHelper.sizedBox(context, 1, null),
-              StreamBuilder(
-                  stream: homeContrl.readUsers(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final users = snapshot.data!;
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const ScrollPhysics(),
-                          itemCount: users.length + 1,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            if (index < users.length) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: AppHelper.width(context, 40),
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 4),
-                                        child: AppText(
-                                          text: users[index].name,
-                                          maxLines: 2,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 15),
-                                      child: SizedBox(
-                                        width: AppHelper.width(context, 25),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 4),
-                                          child: AppText(
-                                            text: users[index].contactNo,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    AppTextField(
-                                      width: AppHelper.width(context, 20),
-                                      maxLength: 5,
-                                      keyboardType: TextInputType.number,
-                                      textInputAction: TextInputAction.next,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: AppHelper.width(context, 40),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(bottom: 4),
-                                        child: AppText(
-                                          text: "Name",
-                                          maxLines: 2,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 15),
-                                      child: SizedBox(
-                                        width: AppHelper.width(context, 25),
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(bottom: 4),
-                                          child: AppText(
-                                            text: "Contact No",
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: AppHelper.width(context, 20),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(bottom: 4),
-                                        child: AppText(
-                                          text: "Path",
-                                          textAlign: TextAlign.center,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          });
-                    } else {
-                      return const Center(child: AppLoaderWidget());
-                    }
+              AppHelper.sizedBox(context, 0.5, null),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: AppButtonBox(
+                  isClickable: true,
+                  onTap: () {
+                    Get.toNamed(AppRoutes.user);
+                  },
+                  child: Center(
+                    child: AppText(
+                      text: "ભક્તોની યાદી",
+                      fontColor: Colors.white,
+                      fontSize: AppHelper.font(context, 16),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              AppHelper.sizedBox(context, 0.5, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              AppHelper.sizedBox(context, 0.5, null),
+              ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: const ScrollPhysics(),
+                  itemCount: contrl.pathList.length,
+                  itemBuilder: (context, index) {
+                    var items = contrl.pathList;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 5),
+                      child: AppButtonBox(
+                        isClickable: true,
+                        onTap: () {
+                          Get.toNamed(AppRoutes.commonDate);
+                        },
+                        child: Center(
+                          child: AppText(
+                            text: items[index],
+                            fontColor: Colors.white,
+                            fontSize: AppHelper.font(context, 16),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    );
                   }),
+              AppHelper.sizedBox(context, 0.5, null),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              AppHelper.sizedBox(context, 0.5, null),
             ],
           ),
         ));

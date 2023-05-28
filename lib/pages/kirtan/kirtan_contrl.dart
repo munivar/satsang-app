@@ -26,4 +26,10 @@ class KirtanController extends GetxController {
     lyricUI.lyricBaseLine = LyricBaseLine.EXT_CENTER;
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    audioPlayer.dispose();
+    super.onClose();
+  }
 }
