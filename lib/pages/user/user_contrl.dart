@@ -18,23 +18,37 @@ class UserController extends GetxController {
         try {
           isLoading(true);
           // Get a instance to the Firestore collection
-          final docUser =
-              FirebaseFirestore.instance.collection(Const.fireUsers).doc();
-          // create user jsonReq
-          final user = UserList(
-              id: docUser.id,
-              name: nameContrl.text.toString(),
-              contactNo: contactContrl.text.toString(),
-              count: "");
-          final jsonReq = user.toJson();
-          // create doc and write data in firebase firestore
-          await docUser.set(jsonReq).then((value) {
-            nameContrl.text = "";
-            contactContrl.text = "";
-            Fluttertoast.showToast(msg: "New User Added");
+          final collectionRef =
+              FirebaseFirestore.instance.collection(Const.fireUsers);
+          // Query for the specific document using its Contact No
+          QuerySnapshot querySnapshot = await collectionRef
+              .where(FieldPath.fromString("contactNo"),
+                  isEqualTo: contactContrl.text.toString())
+              .get();
+          // Check if the document exists
+          if (querySnapshot.size > 0) {
+            Fluttertoast.showToast(msg: "Devotee is already in list");
             isLoading(false);
-            Get.back();
-          });
+          } else {
+            // Get a instance to the Firestore collection
+            final collectionRef =
+                FirebaseFirestore.instance.collection(Const.fireUsers).doc();
+            // create user jsonReq
+            final user = UserList(
+                id: collectionRef.id,
+                name: nameContrl.text.toString(),
+                contactNo: contactContrl.text.toString(),
+                count: "");
+            final jsonReq = user.toJson();
+            // create doc and write data in firebase firestore
+            await collectionRef.set(jsonReq).then((value) {
+              nameContrl.text = "";
+              contactContrl.text = "";
+              Fluttertoast.showToast(msg: "New User Added");
+              isLoading(false);
+              Get.back();
+            });
+          }
         } catch (e) {
           debugPrint("firebaseError ->> $e");
           isLoading(false);
@@ -54,10 +68,10 @@ class UserController extends GetxController {
         try {
           isLoading(true);
           // Get a instance to the Firestore collection
-          final docUser =
+          final collectionRef =
               FirebaseFirestore.instance.collection(Const.fireUsers);
           // Query for the specific document using its Contact No
-          QuerySnapshot querySnapshot = await docUser
+          QuerySnapshot querySnapshot = await collectionRef
               .where(FieldPath.fromString("contactNo"),
                   isEqualTo: contactContrl.text.toString())
               .get();
@@ -99,9 +113,10 @@ class UserController extends GetxController {
       try {
         isLoading(true);
         // Get a instance to the Firestore collection
-        final docUser = FirebaseFirestore.instance.collection(Const.fireUsers);
+        final collectionRef =
+            FirebaseFirestore.instance.collection(Const.fireUsers);
         // Query for the specific document using its Contact No
-        QuerySnapshot querySnapshot = await docUser
+        QuerySnapshot querySnapshot = await collectionRef
             .where(FieldPath.fromString("contactNo"),
                 isEqualTo: contactContrl.text.toString())
             .get();
