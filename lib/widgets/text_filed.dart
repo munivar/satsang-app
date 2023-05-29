@@ -26,6 +26,7 @@ class AppTextField extends StatelessWidget {
   final bool? obscureText;
   final int? maxLength;
   final InputDecoration? decoration;
+  final TextAlign? textAlign;
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
@@ -52,6 +53,7 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.fillColor,
     this.decoration,
+    this.textAlign,
     this.inputFormatters,
     this.suffix,
     this.fontFamily,
@@ -82,6 +84,7 @@ class AppTextField extends StatelessWidget {
         onChanged: onChanged,
         onSubmitted: onSubmitted,
         obscureText: obscureText ?? false,
+        textAlign: textAlign ?? TextAlign.left,
         decoration: decoration ??
             InputDecoration(
               counter: const Offstage(),

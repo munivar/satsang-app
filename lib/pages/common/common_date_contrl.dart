@@ -51,25 +51,46 @@ class CommonDateController extends GetxController {
                   : Const.fireParcha)
           .doc();
       // create user jsonReq
-      final user = CommonDateList(id: documentRef.id, date: finalDate);
-      final jsonReq = user.toJson();
+      final jsonModel = CommonDateList(id: documentRef.id, date: finalDate);
+      final jsonReq = jsonModel.toJson();
       // create doc and write data in firebase firestore
       await documentRef.set(jsonReq).then((value) {
         Fluttertoast.showToast(msg: "New Collection Added");
-        isLoading(false);
+        ///////////////////////////////////////////////////////////////////////////////////
+        // Get a reference to the source collection
+        CollectionReference sourceCollection =
+            FirebaseFirestore.instance.collection(Const.fireUsers);
+        // Get a reference to the destination collection
+        CollectionReference destinationCollection = FirebaseFirestore.instance
+            .collection(Const.fireVandu)
+            .doc(documentRef.id)
+            .collection(finalDate);
+        // Retrieve the documents from the source collection
+        sourceCollection.get().then((QuerySnapshot snapshot) {
+          if (snapshot.docs.isNotEmpty) {
+            // Iterate through each document
+            for (var document in snapshot.docs) {
+              // Get the data from the document
+              Object? data = document.data();
+              // Add the data to the destination collection
+              destinationCollection.add(data).then((_) {
+                debugPrint("Document Copied Sucessfully");
+                isLoading(false);
+              }).catchError((error) {
+                debugPrint('Error copying document: $error');
+                isLoading(false);
+              });
+            }
+          } else {
+            debugPrint('No documents found in the source collection.');
+            isLoading(false);
+          }
+        }).catchError((error) {
+          debugPrint('Error retrieving documents: $error');
+          isLoading(false);
+        });
+        ///////////////////////////////////////////////////////////////////////////////////
       });
-      // final subDocumentRef = FirebaseFirestore.instance
-      //     .collection("vandu")
-      //     .doc(documentRef.id)
-      //     .collection(date)
-      //     .doc();
-      // await subDocumentRef.set(jsonReq).then((value) {
-      //   nameContrl.text = "";
-      //   contactContrl.text = "";
-      //   Fluttertoast.showToast(msg: "New User Added");
-      //   isLoading(false);
-      //   Get.back();
-      // });
     } catch (e) {
       debugPrint("error ->> $e");
     }

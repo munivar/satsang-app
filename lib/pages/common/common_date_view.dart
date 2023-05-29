@@ -135,7 +135,12 @@ class CommonDateView extends StatelessWidget {
                                     child: AppButtonBox(
                                       isClickable: true,
                                       onTap: () {
-                                        Get.toNamed(AppRoutes.commonUser);
+                                        Get.toNamed(AppRoutes.commonUser,
+                                            arguments: {
+                                              "headName": contrl.headName.value,
+                                              "headDate": items[index].date,
+                                              "headDocId": items[index].id,
+                                            });
                                       },
                                       child: Center(
                                         child: AppText(

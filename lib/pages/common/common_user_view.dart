@@ -207,6 +207,7 @@ class CommonUserView extends StatelessWidget {
                                   AppTextField(
                                     height: 45,
                                     maxLines: 1,
+                                    textAlign: TextAlign.center,
                                     width: AppHelper.width(context, 30),
                                     keyboardType: TextInputType.number,
                                     textInputAction: TextInputAction.next,
