@@ -24,7 +24,8 @@ class UserController extends GetxController {
           final user = UserList(
               id: docUser.id,
               name: nameContrl.text.toString(),
-              contactNo: contactContrl.text.toString());
+              contactNo: contactContrl.text.toString(),
+              count: "");
           final jsonReq = user.toJson();
           // create doc and write data in firebase firestore
           await docUser.set(jsonReq).then((value) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satsang/anim/fade_animation.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
@@ -122,37 +123,46 @@ class CommonDateView extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final items = snapshot.data!;
-                            return ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                physics: const ScrollPhysics(),
-                                itemCount: items.length,
-                                reverse: true,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
-                                    child: AppButtonBox(
-                                      isClickable: true,
-                                      onTap: () {
-                                        Get.toNamed(AppRoutes.commonUser,
-                                            arguments: {
-                                              "headName": contrl.headName.value,
-                                              "headDate": items[index].date,
-                                              "headDocId": items[index].id,
-                                            });
-                                      },
-                                      child: Center(
-                                        child: AppText(
-                                          text: items[index].date,
-                                          fontColor: Colors.white,
-                                          fontSize: AppHelper.font(context, 16),
-                                          fontWeight: FontWeight.w600,
+                            if (items.isNotEmpty) {
+                              return FadeAppAnimation(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    physics: const ScrollPhysics(),
+                                    itemCount: items.length,
+                                    reverse: true,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: AppButtonBox(
+                                          isClickable: true,
+                                          onTap: () {
+                                            Get.toNamed(AppRoutes.commonUser,
+                                                arguments: {
+                                                  "headName":
+                                                      contrl.headName.value,
+                                                  "headDate": items[index].date,
+                                                  "headDocId": items[index].id,
+                                                });
+                                          },
+                                          child: Center(
+                                            child: AppText(
+                                              text: items[index].date,
+                                              fontColor: Colors.white,
+                                              fontSize:
+                                                  AppHelper.font(context, 16),
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                });
+                                      );
+                                    }),
+                              );
+                            } else {
+                              return const Center(
+                                  child: AppText(text: "No Data"));
+                            }
                           } else {
                             return Center(
                               child: SizedBox(

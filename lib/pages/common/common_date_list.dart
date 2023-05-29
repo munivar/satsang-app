@@ -10,19 +10,23 @@ String languageListToJson(List<CommonDateList> data) =>
 class CommonDateList {
   String id;
   String date;
+  String count;
 
   CommonDateList({
     required this.id,
     required this.date,
+    required this.count,
   });
 
   factory CommonDateList.fromJson(Map<String, dynamic> json) => CommonDateList(
         id: json["id"],
         date: json["date"],
+        count: json["count"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "date": date,
+        "count": count,
       };
 }

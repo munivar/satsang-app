@@ -10,22 +10,26 @@ class UserList {
   String id;
   String name;
   String contactNo;
+  String count;
 
   UserList({
     required this.id,
     required this.name,
     required this.contactNo,
+    required this.count,
   });
 
   factory UserList.fromJson(Map<String, dynamic> json) => UserList(
         id: json["id"],
         name: json["name"],
         contactNo: json["contactNo"],
+        count: json["count"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "contactNo": contactNo,
+        "count": count,
       };
 }

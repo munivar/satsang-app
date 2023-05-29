@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satsang/anim/fade_animation.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
@@ -59,7 +60,7 @@ class CommonUserView extends StatelessWidget {
               ),
             ),
             AppText(
-              text: "વંદુ સહજાનંદ પાઠ",
+              text: contrl.headName.value,
               fontSize: AppHelper.font(context, 20),
               fontColor: Colors.white,
               fontWeight: FontWeight.w600,
@@ -165,62 +166,77 @@ class CommonUserView extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final items = snapshot.data!;
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const ScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: AppHelper.width(context, 40),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 4),
-                                      child: AppText(
-                                        text: items[index].name,
-                                        maxLines: 2,
-                                        fontSize: 18,
+                      if (items.isNotEmpty) {
+                        return FadeAppAnimation(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const ScrollPhysics(),
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                contrl.countContrl.add(TextEditingController(
+                                    text: items[index].count.toString()));
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: AppHelper.width(context, 40),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 4),
+                                          child: AppText(
+                                            text: items[index].name,
+                                            maxLines: 2,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.only(right: 15),
-                                  //   child: SizedBox(
-                                  //     width: AppHelper.width(context, 25),
-                                  //     child: Padding(
-                                  //       padding:
-                                  //           const EdgeInsets.only(bottom: 4),
-                                  //       child: AppText(
-                                  //         text: items[index].contactNo,
-                                  //         fontSize: 18,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  AppTextField(
-                                    height: 45,
-                                    maxLines: 1,
-                                    textAlign: TextAlign.center,
-                                    width: AppHelper.width(context, 30),
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.next,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(right: 15),
+                                      //   child: SizedBox(
+                                      //     width: AppHelper.width(context, 25),
+                                      //     child: Padding(
+                                      //       padding:
+                                      //           const EdgeInsets.only(bottom: 4),
+                                      //       child: AppText(
+                                      //         text: items[index].contactNo,
+                                      //         fontSize: 18,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      AppTextField(
+                                        height: 45,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.center,
+                                        width: AppHelper.width(context, 30),
+                                        keyboardType: TextInputType.number,
+                                        textInputAction: TextInputAction.next,
+                                        controller: contrl.countContrl[index],
+                                        onChanged: (value) {
+                                          contrl.resetTimer(
+                                              index, value, items[index]);
+                                        },
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 15, right: 15, top: 18),
+                                      )
                                     ],
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 15, right: 15, top: 18),
-                                  )
-                                ],
-                              ),
-                            );
-                          });
+                                  ),
+                                );
+                              }),
+                        );
+                      } else {
+                        return const Center(child: AppText(text: "No Data"));
+                      }
                     } else {
                       return Center(
                         child: SizedBox(

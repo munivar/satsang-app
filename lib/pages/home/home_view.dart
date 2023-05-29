@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satsang/anim/fade_animation.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
@@ -98,80 +99,83 @@ class HomeView extends StatelessWidget {
         color: AppColor.backgroundClr,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppHelper.sizedBox(context, 1, null),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Divider(
-                  color: Colors.grey,
+          child: FadeAppAnimation(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppHelper.sizedBox(context, 1, null),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              AppHelper.sizedBox(context, 0.5, null),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                child: AppButtonBox(
-                  isClickable: true,
-                  onTap: () {
-                    Get.toNamed(AppRoutes.user);
-                  },
-                  child: Center(
-                    child: AppText(
-                      text: "ભક્તોની યાદી",
-                      fontColor: Colors.white,
-                      fontSize: AppHelper.font(context, 16),
-                      fontWeight: FontWeight.w600,
+                AppHelper.sizedBox(context, 0.5, null),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: AppButtonBox(
+                    width: AppHelper.width(context, 100),
+                    isClickable: true,
+                    onTap: () {
+                      Get.toNamed(AppRoutes.user);
+                    },
+                    child: Center(
+                      child: AppText(
+                        text: "ભક્તોની યાદી",
+                        fontColor: Colors.white,
+                        fontSize: AppHelper.font(context, 16),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              AppHelper.sizedBox(context, 0.5, null),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Divider(
-                  color: Colors.grey,
+                AppHelper.sizedBox(context, 0.5, null),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              AppHelper.sizedBox(context, 0.5, null),
-              ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: const ScrollPhysics(),
-                  itemCount: contrl.pathList.length,
-                  itemBuilder: (context, index) {
-                    var items = contrl.pathList;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
-                      child: AppButtonBox(
-                        isClickable: true,
-                        onTap: () {
-                          Get.toNamed(AppRoutes.commonDate,
-                              arguments: {"headName": items[index]});
-                        },
-                        child: Center(
-                          child: AppText(
-                            text: items[index],
-                            fontColor: Colors.white,
-                            fontSize: AppHelper.font(context, 16),
-                            fontWeight: FontWeight.w600,
+                AppHelper.sizedBox(context, 0.5, null),
+                ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const ScrollPhysics(),
+                    itemCount: contrl.pathList.length,
+                    itemBuilder: (context, index) {
+                      var items = contrl.pathList;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        child: AppButtonBox(
+                          isClickable: true,
+                          onTap: () {
+                            Get.toNamed(AppRoutes.commonDate,
+                                arguments: {"headName": items[index]});
+                          },
+                          child: Center(
+                            child: AppText(
+                              text: items[index],
+                              fontColor: Colors.white,
+                              fontSize: AppHelper.font(context, 16),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-              AppHelper.sizedBox(context, 0.5, null),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Divider(
-                  color: Colors.grey,
+                      );
+                    }),
+                AppHelper.sizedBox(context, 0.5, null),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              AppHelper.sizedBox(context, 0.5, null),
-            ],
+                AppHelper.sizedBox(context, 0.5, null),
+              ],
+            ),
           ),
         ));
   }

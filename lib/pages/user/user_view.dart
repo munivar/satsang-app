@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satsang/anim/fade_animation.dart';
 import 'package:satsang/helpers/app_color.dart';
 import 'package:satsang/helpers/app_helper.dart';
 import 'package:satsang/helpers/app_images.dart';
@@ -208,48 +209,56 @@ class UserView extends StatelessWidget {
                       // call this fun after windget initialized
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         contrl.totalUser.value = snapshot.data!.length;
-                      });
-                      //////
+                      }); //////
                       final items = snapshot.data!;
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const ScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: AppHelper.width(context, 40),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 4),
-                                      child: AppText(
-                                        text: items[index].name,
-                                        maxLines: 2,
-                                        fontSize: 18,
+                      if (items.isNotEmpty) {
+                        return FadeAppAnimation(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const ScrollPhysics(),
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: AppHelper.width(context, 40),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 4),
+                                          child: AppText(
+                                            text: items[index].name,
+                                            maxLines: 2,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: AppHelper.width(context, 30),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 4),
-                                      child: AppText(
-                                        text: items[index].contactNo,
-                                        fontSize: 18,
+                                      SizedBox(
+                                        width: AppHelper.width(context, 30),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 4),
+                                          child: AppText(
+                                            text: items[index].contactNo,
+                                            fontSize: 18,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            );
-                          });
+                                );
+                              }),
+                        );
+                      } else {
+                        return const Center(child: AppText(text: "No Data"));
+                      }
                     } else {
                       return Center(
                         child: SizedBox(

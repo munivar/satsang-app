@@ -51,46 +51,51 @@ class CommonDateController extends GetxController {
                   : Const.fireParcha)
           .doc();
       // create user jsonReq
-      final jsonModel = CommonDateList(id: documentRef.id, date: finalDate);
+      final jsonModel =
+          CommonDateList(id: documentRef.id, date: finalDate, count: "");
       final jsonReq = jsonModel.toJson();
       // create doc and write data in firebase firestore
-      await documentRef.set(jsonReq).then((value) {
-        Fluttertoast.showToast(msg: "New Collection Added");
-        ///////////////////////////////////////////////////////////////////////////////////
-        // Get a reference to the source collection
-        CollectionReference sourceCollection =
-            FirebaseFirestore.instance.collection(Const.fireUsers);
-        // Get a reference to the destination collection
-        CollectionReference destinationCollection = FirebaseFirestore.instance
-            .collection(Const.fireVandu)
-            .doc(documentRef.id)
-            .collection(finalDate);
-        // Retrieve the documents from the source collection
-        sourceCollection.get().then((QuerySnapshot snapshot) {
-          if (snapshot.docs.isNotEmpty) {
-            // Iterate through each document
-            for (var document in snapshot.docs) {
-              // Get the data from the document
-              Object? data = document.data();
-              // Add the data to the destination collection
-              destinationCollection.add(data).then((_) {
-                debugPrint("Document Copied Sucessfully");
-                isLoading(false);
-              }).catchError((error) {
-                debugPrint('Error copying document: $error');
-                isLoading(false);
-              });
-            }
-          } else {
-            debugPrint('No documents found in the source collection.');
+      await documentRef.set(jsonReq);
+      ///////////////////////////////////////////////////////////////////////////////////
+      // Get a reference to the source collection
+      CollectionReference sourceCollection =
+          FirebaseFirestore.instance.collection(Const.fireUsers);
+      // Get a reference to the destination collection
+      CollectionReference destinationCollection = FirebaseFirestore.instance
+          .collection(headName.value == Const.vanduPath
+              ? Const.fireVandu
+              : headName.value == Const.hanumanjiMantra
+                  ? Const.fireHanumanji
+                  : Const.fireParcha)
+          .doc(documentRef.id)
+          .collection(finalDate);
+      // Retrieve the documents from the source collection
+      QuerySnapshot querySnapshot = await sourceCollection.get();
+      if (querySnapshot.docs.isNotEmpty) {
+        // Iterate through each document
+        for (var document in querySnapshot.docs) {
+          // Get the data from the document
+          var data = document.data() as Map<String, dynamic>;
+          // Add the data to the destination collection
+          destinationCollection.add({
+            'id': data["id"],
+            'name': data["name"],
+            'contactNo': data["contactNo"],
+            'count': "",
+          }).then((_) {
+            debugPrint("Document Copied Sucessfully");
             isLoading(false);
-          }
-        }).catchError((error) {
-          debugPrint('Error retrieving documents: $error');
-          isLoading(false);
-        });
-        ///////////////////////////////////////////////////////////////////////////////////
-      });
+          }).catchError((error) {
+            debugPrint('Error copying document: $error');
+            isLoading(false);
+          });
+        }
+      } else {
+        debugPrint('No documents found in the source collection.');
+        isLoading(false);
+      }
+      Fluttertoast.showToast(msg: "New Collection Added");
+      ///////////////////////////////////////////////////////////////////////////////////
     } catch (e) {
       debugPrint("error ->> $e");
     }
